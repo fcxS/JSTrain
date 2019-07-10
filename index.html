@@ -11,19 +11,25 @@
 </head>
 
 <body>
-    <img src="" id="rainbow"  width="400" height="200">
+    <img src="" id="rainbow" width="400" height="200">
+
     <script>
         console.log("aboout to fetch a rainbow");
-        fetch('rainbow.jpg').then(response => {
-            console.log(response);
-            return response.blob();
-        }).then(blob => {
-            console.log(blob);
+        catchRainbow()
+            .then(response=>{
+                console.log("YES BOI")
+            })
+            .catch(error => {
+                console.log("error!")
+                console.error(error)
+            });
+
+        async function catchRainbow() {
+            const response = await fetch('rainbow.jpg');
+            const blob = await response.blob();
             document.getElementById("rainbow").src = URL.createObjectURL(blob);
-        })
-        .catch (error =>{
-            console.log(error)
-        });
+
+        }
     </script>
 </body>
 

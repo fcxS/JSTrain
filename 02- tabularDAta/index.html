@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Fetch and Graph CSV</title>
+</head>
+
+<body>
+    <h1> Temperatura media global 1880-2018</h1>
+    <script>
+        // Data from: https://data.giss.nasa.gov/gistemp/
+        // Mean from: https://earthobservatory.nasa.gov/world-of-change/DecadalTem
+
+        getData();
+        async function getData() {
+            //const response = await fetch('test.csv');
+            const response = await fetch('ZonAnn.Ts+dSST.csv');
+            const data = await response.text();
+            //console.log(data);
+
+            const table = data.split('\n').slice(1);
+            table.forEach(elt => {
+                const columns = elt.split(',');
+                const year = columns[0];
+                const temp = columns[1];
+                console.log(year, temp);
+            });
+
+        }
+    </script>
+
+</body>
+
+</html>

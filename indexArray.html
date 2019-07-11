@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>working with api's</title>
+</head>
+
+<body>
+    <h1>Fetching from array</h1>
+    <script>
+        console.log("about to fetch some rainbow");
+        const filenames = [
+            'image/inst-image-1.jpg',
+            'image/inst-image-2.jpg',
+            'image/inst-image-3.jpg'
+        ];
+
+        catchRainbow(filenames)
+            .then(response => {
+                console.log("YES BOI")
+            })
+            .catch(error => {
+                console.log("error!")
+                console.error(error)
+            });
+
+
+        async function catchRainbow(filenames) {
+            for (let filename of filenames) {
+                const response = await fetch(filename);
+                const blob = await response.blob();
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(blob);
+                img.width = '200';
+                document.body.append(img);
+            }
+        }
+    </script>
+
+</body>
+
+</html>

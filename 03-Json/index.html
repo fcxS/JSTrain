@@ -26,14 +26,21 @@
     <p> Longitud : <span id="lon"></span></p>
     <div id="issMap"></div>
     <script>
-        const mymap = L.map('issMap').setView([0,0], 1);
+        const mymap = L.map('issMap').setView([0,0], 1);  // inicializar el mapa
+        const issIcon = L.icon({ // como personalizar el icono
+            iconUrl:'iss.png',
+            iconSize: [50,32],
+            iconAnchor: [25,15]
+        });
+
+        const marker = L.marker([0,0], {icon : issIcon}).addTo(mymap); // creamos el marcador con su icono personalizado
         const attribution = '&copy; <a href"https://www.openstreetmap.org/copyright"> OpenStreetMap'
-        const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-        const tiles = L.tileLayer(tileUrl,{attribution});
+        const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        const tiles = L.tileLayer(tileUrl,{attribution}); // todos los mapas necesitas tiles , y con leaflet asi se consiguen junto con openstreetmap
         tiles.addTo(mymap);
 
 
-        const api_url = "https://api.wheretheiss.at/v1/satellites/25544";
+        const api_url = "https://api.wheretheiss.at/v1/satellites/25544"; // api id para poder usar la iss como referencia
         async function getISS() {
             const response = await fetch(api_url);
             const data = await response.json();
@@ -41,8 +48,9 @@
                 latitude,
                 longitude
             } = data;
-            document.getElementById('lat').textContent = latitude;
-            document.getElementById('lon').textContent = longitude;
+            marker.setLatLng([latitude,longitude]); // info para el marcador
+            document.getElementById('lat').textContent = latitude; // info para sea usada en los parrafos
+            document.getElementById('lon').textContent = longitude; // info para sea usada en los parrafos
 
             // console.log(latitude);
             // console.log(longitude);

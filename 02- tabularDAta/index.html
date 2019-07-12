@@ -6,16 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Fetch and Graph CSV</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
 </head>
 
 <body>
+
     <h1> Temperatura media global 1880-2018</h1>
+
+    <canvas id="chart" width="800" height="400"></canvas>
     <script>
+        chartIt();
+        async function chartIt() {
+            const data = await getData();
+            const ctx = document.getElementById('chart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.xs,
+                    datasets: [{
+                        label: 'Temperatura media Global 1880-2018',
+                        data: data.xy,
+                        fill: false,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                               callback: function(value , index , values){
+                                   return value  + 'º'
+                               }
+                            }
+                        }]
+                    }
+                }
+            });
+
+        }
+
         // Data from: https://data.giss.nasa.gov/gistemp/
         // Mean from: https://earthobservatory.nasa.gov/world-of-change/DecadalTem
 
         getData();
         async function getData() {
+            const xs = [];
+            const xy = [];
             //const response = await fetch('test.csv');
             const response = await fetch('ZonAnn.Ts+dSST.csv');
             const data = await response.text();
@@ -25,9 +63,15 @@
             table.forEach(elt => {
                 const columns = elt.split(',');
                 const year = columns[0];
+                xs.push(year);
                 const temp = columns[1];
-                console.log(year, temp);
+                xy.push(parseFloat(temp) + 14);
+                //console.log(year, temp);
             });
+            return {
+                xs,
+                xy
+            };
 
         }
     </script>

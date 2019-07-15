@@ -12,20 +12,36 @@
     <script>
         if ('geolocation' in navigator) {
             console.log("Geolocalizacion Disponible")
-            navigator.geolocation.getCurrentPosition(position => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-                document.getElementById('latitud').textContent = lat;
-                document.getElementById('longitud').textContent = lng;
-             console.log(position);
-            })
+            navigator.geolocation.getCurrentPosition(async position => {
+                const lat = position.coords.latitudee;
+                const lon = position.coords.longitudee;
+                document.getElementById('latitude').textContent = lat;
+                document.getElementById('longitude').textContent = lon;
+                console.log(position);
+
+
+                const data = {
+                    lat,
+                    lon
+                };
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                };
+                const response = await fetch('/api', options)
+                const json = await response.json();
+                console.log(json);
+            });
         } else {
             console.log("Geolocalizacion no Disponible")
         }
     </script>
     <h1>Data Selfie App</h1>
-    <p>latitud : <span id="latitud"></span>&deg;</p><br>
-    <p>longitud : <span id="longitud"></span>&deg;</p><br>
+    <p>latitude : <span id="latitude"></span>&deg;</p><br>
+    <p>longitude : <span id="longitude"></span>&deg;</p><br>
 </body>
 
 </html>

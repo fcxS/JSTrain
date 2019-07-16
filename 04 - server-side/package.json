@@ -4,7 +4,8 @@
   "description": "this is the data selfie app by joey lee",
   "main": "index.js",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "nedb": "^1.8.0"
   },
   "devDependencies": {},
   "scripts": {

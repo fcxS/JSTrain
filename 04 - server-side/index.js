@@ -7,7 +7,8 @@ app.use(express.json({
     limit: '1mb'
 }));
 
-const database = new Datastore('database.db');
+//const database = new Datastore('shiffman.db'); // to get working with cam
+const database = new Datastore('database2.db');
 database.loadDatabase();
 
 

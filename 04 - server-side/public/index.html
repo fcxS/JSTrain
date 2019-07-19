@@ -5,52 +5,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js" integrity="sha256-WVsM3xrcqyuFNF3W1qtIKbHFsD0977nDQA8DCMp1zCw=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js" integrity="sha256-2/3R3NV5zryj0fDjD3cDh+SNiWQ/TJiMVZzAo5FrhiU=" crossorigin="anonymous"></script>
-    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"
+        integrity="sha256-WVsM3xrcqyuFNF3W1qtIKbHFsD0977nDQA8DCMp1zCw=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"
+        integrity="sha256-2/3R3NV5zryj0fDjD3cDh+SNiWQ/TJiMVZzAo5FrhiU=" crossorigin="anonymous"></script>
+    <title>JS Working</title>
 </head>
 
 <body>
-    <script>
-        if ('geolocation' in navigator) {
-            console.log("Geolocalizacion Disponible")
-            navigator.geolocation.getCurrentPosition(async position => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                const button = document.getElementById('submit');
-                const mood = document.getElementById('mood').value;
-                document.getElementById('latitude').textContent = lat;
-                document.getElementById('longitude').textContent = lon;
-                console.log(position);
-
-                const data = {
-                    lat,
-                    lon,
-                    mood
-                };
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                };
-                const response = await fetch('/api', options)
-                const json = await response.json();
-                console.log(json);
-            });
-        } else {
-            console.log("Geolocalizacion no Disponible")
-        }
-    </script>
     <h1>Data Selfie App</h1>
     <p>
         latitude: <span id="latitude"></span>&deg;<br />
         longitude: <span id="longitude"></span>&deg;
     </p>
-    <label for="mood">enter your mood</label>
-    <input id="mood" value="rainbow" />
-    <button id="submit">submit</button>
+    <label for="mood">Enter your current workspace</label>
+    <input id="mood" value="" />
+    <button id="submit">Confirmar</button>
+    <script>
+        let lat, lon;
+        const button = document.getElementById('submit');
+        button.addEventListener('click', async event => {
+            const mood = document.getElementById('mood').value;
+            const data = {
+                lat,
+                lon,
+                mood
+            };
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
+            const response = await fetch('/api', options);
+            const json = await response.json();
+            console.log(json);
+        });
+        if ('geolocation' in navigator) {
+            console.log('geolocation available');
+            navigator.geolocation.getCurrentPosition(async position => {
+                lat = position.coords.latitude;
+                lon = position.coords.longitude;
+                document.getElementById('latitude').textContent = lat;
+                document.getElementById('longitude').textContent = lon;
+            });
+        } else {
+            console.log('geolocation not available');
+        }
+    </script>
+
 </body>
 
 </html>
